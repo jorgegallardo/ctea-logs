@@ -39,6 +39,7 @@ var app = angular.module('cteaLogs', [])
     });
     $scope.firstName = '';
     $scope.lastName = '';
+    $scope.studentId = '';
   };
   
   $scope.checkStudentId = function() {

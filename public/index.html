@@ -94,19 +94,16 @@
             <div class="modal-body" ng-show="studentAuthenticated">
               <div class="btn-group-vertical btn-block" role="group">
                 <button type="button" class="btn btn-danger btn-modal-large" ng-click="addDateTime(activeStudent.late)">
-                  <i class="fa fa-bell" aria-hidden="true"></i> Late
+                  <i class="fa fa-bell" aria-hidden="true" data-dismiss="modal"></i> Late
                 </button>
                 <button type="button" class="btn btn-warning btn-modal-large" ng-click="addDateTime(activeStudent.outOfUniform)">
-                  <i class="fa fa-ban" aria-hidden="true"></i> Out of Uniform
+                  <i class="fa fa-ban" aria-hidden="true" data-dismiss="modal"></i> Out of Uniform
                 </button>
                 <button type="button" class="btn btn-primary btn-modal-large" ng-click="addDateTime(activeStudent.bathroom)">
-                  <i class="fa fa-shower" aria-hidden="true"></i> Bathroom
+                  <i class="fa fa-shower" aria-hidden="true" data-dismiss="modal"></i> Bathroom
                 </button>
               </div> <!-- button group -->
             </div>
-
-
-
 
             <div class="modal-body" ng-hide="studentAuthenticated">
               <!--<form class="form" ng-hide="studentAuthenticated" ng-submit="checkStudentId()">
@@ -124,7 +121,6 @@
                 </div><!-- /input-group -->
               </form>
 
-              
               <!--<p>You've been late {{activeStudent.late.length}} times.</p>
               <p>You've gone to the bathroom {{ activeStudent.bathroom.length }} times.</p>
               <p>You've been out of uniform {{activeStudent.outOfUniform.length}} times.</p>-->
