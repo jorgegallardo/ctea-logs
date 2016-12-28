@@ -1,7 +1,7 @@
 var app = angular.module('cteaLogs', [])
 
 .controller('MainController', ['$scope', function($scope) {
-  $scope.studentAuthenticated = false;
+  $scope.askForStudentVerification = false;
 
   $scope.students = [
     {
@@ -16,11 +16,6 @@ var app = angular.module('cteaLogs', [])
 
   $scope.setStudent = function(student) {
     $scope.activeStudent = student;
-  };
-
-  $scope.addDateTime = function(student) {
-    $scope.timeInMs = Date.now();
-    student.push({dateTime: $scope.timeInMs});
   };
   
   $scope.captureTime = function() {
@@ -42,12 +37,21 @@ var app = angular.module('cteaLogs', [])
     $scope.studentId = '';
   };
   
+  $scope.verifyStudentCheck = function() {
+    console.log('hi');
+    $scope.askForStudentVerification = true;
+  };
+
   $scope.checkStudentId = function() {
-    // console.log(typeof $scope.lastFourDigits);
     if($scope.lastFourDigits === $scope.activeStudent.studentId.toString()) {
-      return $scope.studentAuthenticated = true;
+      $scope.addDateTime(activeStudent.late);
     }
     alert("Incorrect Student ID entered.");
     $scope.lastFourDigits = "";
+  };
+
+  $scope.addDateTime = function(student) {
+    $scope.timeInMs = Date.now();
+    student.push({dateTime: $scope.timeInMs});
   };
 }]);
