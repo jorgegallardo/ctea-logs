@@ -15,6 +15,7 @@ var app = angular.module('cteaLogs', [])
   ];
 
   $scope.setStudent = function(student) {
+    $scope.askForStudentVerification = false;
     $scope.activeStudent = student;
   };
   
@@ -37,16 +38,25 @@ var app = angular.module('cteaLogs', [])
     $scope.studentId = '';
   };
   
-  $scope.verifyStudentCheck = function() {
-    console.log('hi');
+  $scope.verifyStudentCheck = function(eventType) {
+    $scope.eventType = eventType;
     $scope.askForStudentVerification = true;
   };
 
   $scope.checkStudentId = function() {
-    if($scope.lastFourDigits === $scope.activeStudent.studentId.toString()) {
-      $scope.addDateTime(activeStudent.late);
+    if($scope.lastFourDigits != $scope.activeStudent.studentId.toString()) {
+      alert("Incorrect Student ID entered.");
+      $scope.lastFourDigits = "";
+      return;
     }
-    alert("Incorrect Student ID entered.");
+    if ($scope.eventType == 'late') {
+      $scope.addDateTime($scope.activeStudent.late);
+    } else if ($scope.eventType == 'outOfUniform') {
+      $scope.addDateTime($scope.activeStudent.outOfUniform);
+    } else if ($scope.eventType == 'bathroom') {
+      $scope.addDateTime($scope.activeStudent.bathroom);
+    }
+    $('#myModal').modal('hide');
     $scope.lastFourDigits = "";
   };
 

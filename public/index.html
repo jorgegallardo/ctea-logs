@@ -87,13 +87,13 @@
             <!--student choosing event-->
             <div class="modal-body" ng-hide="askForStudentVerification">
               <div class="btn-group-vertical btn-block" role="group">
-                <button type="button" class="btn btn-danger btn-modal-large" ng-click="verifyStudentCheck()">
+                <button type="button" class="btn btn-danger btn-modal-large" ng-click="verifyStudentCheck('late')">
                   <i class="fa fa-bell" aria-hidden="true" data-dismiss="modal"></i> Late
                 </button>
-                <button type="button" class="btn btn-warning btn-modal-large" ng-click="addDateTime(activeStudent.outOfUniform)">
+                <button type="button" class="btn btn-warning btn-modal-large" ng-click="verifyStudentCheck('outOfUniform')">
                   <i class="fa fa-ban" aria-hidden="true" data-dismiss="modal"></i> Out of Uniform
                 </button>
-                <button type="button" class="btn btn-primary btn-modal-large" ng-click="addDateTime(activeStudent.bathroom)">
+                <button type="button" class="btn btn-primary btn-modal-large" ng-click="verifyStudentCheck('bathroom')">
                   <i class="fa fa-shower" aria-hidden="true" data-dismiss="modal"></i> Bathroom
                 </button>
               </div> <!-- button group -->
