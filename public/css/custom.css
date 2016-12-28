@@ -1,3 +1,13 @@
 body {
   padding-top: 50px;
 }
+
+.btn-modal-large {
+  padding: 40px 64px;
+  font-size: 48px;
+  line-height: 1.3333333;
+}
+
+.input-group {
+    width: 100%;
+}

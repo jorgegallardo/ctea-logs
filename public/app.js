@@ -1,6 +1,8 @@
 var app = angular.module('cteaLogs', [])
 
 .controller('MainController', ['$scope', function($scope) {
+  $scope.studentAuthenticated = false;
+
   $scope.students = [
     {
       firstName: 'Bob',
@@ -30,11 +32,21 @@ var app = angular.module('cteaLogs', [])
     $scope.students.push({
       firstName: $scope.firstName,
       lastName: $scope.lastName,
+      studentId: $scope.studentId,
       late: [],
       outOfUniform: [],
       bathroom: []
     });
     $scope.firstName = '';
     $scope.lastName = '';
+  };
+  
+  $scope.checkStudentId = function() {
+    // console.log(typeof $scope.lastFourDigits);
+    if($scope.lastFourDigits === $scope.activeStudent.studentId.toString()) {
+      return $scope.studentAuthenticated = true;
+    }
+    alert("Incorrect Student ID entered.");
+    $scope.lastFourDigits = "";
   };
 }]);

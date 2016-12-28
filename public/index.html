@@ -9,14 +9,13 @@
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="./css/custom.css">
   <link rel="stylesheet" href="./css/bootstrap.css">
+  <link rel="stylesheet" href="./css/custom.css">
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="./js/bootstrap.js"></script>
   <script src="./js/angular.js"></script>
-  <script src="./js/double-modal.js"></script>
   <script src="app.js"></script>
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -73,7 +72,11 @@
               <label class="sr-only">Last Name</label>
               <input type="text" class="form-control" placeholder="Last Name" ng-model="lastName">
             </div>
-            <button type="submit" class="btn btn-default">Add Student</button>
+            <div class="form-group">
+              <label class="sr-only">Student ID</label>
+              <input type="text" class="form-control" placeholder="Student ID" ng-model="studentId">
+            </div>
+            <button class="btn btn-default" type="submit">Add Student</button>
           </form>
         </div>
       </div>
@@ -83,34 +86,61 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">Hello {{activeStudent.firstName}}!</h4>
+              <h3 class="modal-title" id="myModalLabel" ng-hide="studentAuthenticated">Student Verification</h3>
+
+              <h3 class="modal-title" id="myModalLabel" ng-show="studentAuthenticated">Hello {{activeStudent.firstName}}.</h3>
+              <h4 ng-show="studentAuthenticated">Press a button below.</h4>
             </div>
-            <div class="modal-body">
-              <p>You've been late {{activeStudent.late.length}} times.</p>
+            <div class="modal-body" ng-show="studentAuthenticated">
+              <div class="btn-group-vertical btn-block" role="group">
+                <button type="button" class="btn btn-danger btn-modal-large" ng-click="addDateTime(activeStudent.late)">
+                  <i class="fa fa-bell" aria-hidden="true"></i> Late
+                </button>
+                <button type="button" class="btn btn-warning btn-modal-large" ng-click="addDateTime(activeStudent.outOfUniform)">
+                  <i class="fa fa-ban" aria-hidden="true"></i> Out of Uniform
+                </button>
+                <button type="button" class="btn btn-primary btn-modal-large" ng-click="addDateTime(activeStudent.bathroom)">
+                  <i class="fa fa-shower" aria-hidden="true"></i> Bathroom
+                </button>
+              </div> <!-- button group -->
+            </div>
+
+
+
+
+            <div class="modal-body" ng-hide="studentAuthenticated">
+              <!--<form class="form" ng-hide="studentAuthenticated" ng-submit="checkStudentId()">
+                <div class="form-group">
+                  <input type="password" class="form-control" placeholder="Please enter the last 4 digits of your Student ID." ng-model="lastFourDigits">
+                </div>
+              </form>-->
+
+              <form class="form-inline" ng-hide="studentAuthenticated" ng-submit="checkStudentId()">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Please enter the last 4 digits of your Student ID." ng-model="lastFourDigits">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Sign In</button>
+                  </span>
+                </div><!-- /input-group -->
+              </form>
+
+              
+              <!--<p>You've been late {{activeStudent.late.length}} times.</p>
               <p>You've gone to the bathroom {{ activeStudent.bathroom.length }} times.</p>
-              <p>You've been out of uniform {{activeStudent.outOfUniform.length}} times.</p>
+              <p>You've been out of uniform {{activeStudent.outOfUniform.length}} times.</p>-->
             </div>
             <!--<div class="modal-footer">
               <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
               <button class="btn btn-primary" data-toggle="modal" data-target="#topModal">Open Modal</button>
             </div>-->
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger" ng-click="addDateTime(activeStudent.late)" data-dismiss="modal">
-                <i class="fa fa-bell" aria-hidden="true"></i> Late
-              </button>
-              <button type="button" class="btn btn-warning" ng-click="addDateTime(activeStudent.outOfUniform)" data-dismiss="modal">
-                <i class="fa fa-ban" aria-hidden="true"></i> Out of Uniform
-              </button>
-              <button type="button" class="btn btn-primary" ng-click="addDateTime(activeStudent.bathroom)" data-toggle="modal" data-target="#idCheck">
-                <i class="fa fa-shower" aria-hidden="true"></i> Bathroom
-              </button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
       </div>
 
-      <div id="idCheck" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <!--<div id="idCheck" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -125,7 +155,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
 
     </div> <!-- container-->
   </body>
