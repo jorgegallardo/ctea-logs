@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 mongoose.connect('mongodb://localhost/ctea-logs');
 // app.use(bodyParser.urlencoded({ extended: false }));
@@ -43,7 +44,7 @@ app.post('/api/students', function(req, res) {
 app.put('/api/students/:objectId/addEvent/:eventType/', function(req, res) {
   var objectId = req.params.objectId;
   var eventType = req.params.eventType;
-  var dateTime = Date.now();
+  var dateTime = moment().format('YYYY-MM-DD hh:mm:ss A');
 
   Student.findOne({_id: objectId}, function(err, student) {
     if(err) return next(err);
