@@ -40,7 +40,7 @@ app.post('/api/students', function(req, res) {
   res.end();
 });
 
-app.put('/api/students/:objectId/addEvent/:eventType', function(req, res) {
+app.put('/api/students/:objectId/addEvent/:eventType/', function(req, res) {
   var objectId = req.params.objectId;
   var eventType = req.params.eventType;
   var dateTime = Date.now();

@@ -42,6 +42,7 @@ var app = angular.module('cteaLogs', ['angularMoment'])
   };
   
   $scope.verifyStudent = function(eventType) {
+    $scope.lastFourDigits = "";
     $scope.eventType = eventType;
     $scope.askForStudentVerification = true;
   };
