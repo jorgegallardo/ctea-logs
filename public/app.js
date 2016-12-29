@@ -47,7 +47,7 @@ var app = angular.module('cteaLogs', ['angularMoment'])
   };
 
   $scope.checkStudentId = function() {
-    if($scope.lastFourDigits != $scope.activeStudent.studentId.toString()) {
+    if($scope.lastFourDigits !== $scope.activeStudent.studentId.toString()) {
       alert("Incorrect Student ID entered.");
       $scope.lastFourDigits = "";
       return;

@@ -32,20 +32,20 @@ app.post('/api/students', function(req, res) {
   var student = new Student(req.body);
   student.save(function(err) {
     if(err) {
-      console.log(err);
+      console.log('Unable to add student to database. It\'s likely that you entered an inappropriate data type in one of the fields.')
     } else {
-      console.log('meow');
+      console.log('Successfully added a student to the database.');
     }
   });
   res.end();
 });
 
-app.put('/api/students/:studentId/addEvent/:eventType', function(req, res) {
-  var studentId = req.params.studentId;
+app.put('/api/students/:objectId/addEvent/:eventType', function(req, res) {
+  var objectId = req.params.objectId;
   var eventType = req.params.eventType;
   var dateTime = Date.now();
 
-  Student.findOne({_id: studentId}, function(err, student) {
+  Student.findOne({_id: objectId}, function(err, student) {
     if(err) return next(err);
     if(!student) return res.end();
     if(eventType === 'late') {
