@@ -8,10 +8,22 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/bootstrap.css">
   <link rel="stylesheet" href="./css/custom.css">
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="./js/bootstrap.js"></script>
   <script src="./js/angular.js"></script>
+  <script src="./js/moment.js"></script>
+  <script src="./js/angular-moment.js"></script>
   <script src="app.js"></script>
+  <script>
+      var startTime = '2016-12-28 05:23:43';
+      var currentTime = moment().format('YYYY-MM-DD hh:mm:ss A');
+      var test = moment().format('ll LTS');
+      var durationMin = moment.utc(moment(currentTime,"YYYY-MM-DD hh:mm:ss").diff(moment(startTime,"YYYY-MM-DD hh:mm:ss"))).format("mm");
+      var durationSec = moment.utc(moment(currentTime,"YYYY-MM-DD hh:mm:ss").diff(moment(startTime,"YYYY-MM-DD hh:mm:ss"))).format("ss");
+      console.log(durationMin + ' minutes ' + durationSec + ' seconds');
+      console.log(test);
+  </script>
 </head>
   <body ng-controller="MainController">
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -39,7 +51,8 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h1>Welcome to Mr. Gallardo's Room</h1>
+          <h1>Welcome, today is {{ monthDayYear }}.</h1>
+          <br>
           <!-- Standard button -->
           <!--<button ng-repeat="student in students | orderBy:'firstName'" type="button" class="btn btn-lg btn-default" data-toggle="modal" data-target="#studentButton" ng-click="setStudent(student)">{{student.firstName}}</button>-->
           <a href="#myModal" role="button" class="btn btn-default btn-lg" data-toggle="modal" ng-repeat="student in students | orderBy:'firstName'" ng-click="setStudent(student)">{{student.firstName}}</a>
@@ -75,25 +88,25 @@
           <div class="modal-content">
             <div class="modal-header" ng-show="askForStudentVerification">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h3 class="modal-title" id="myModalLabel">Student Verification</h3>
+              <h3 class="modal-title">Student Verification</h3>
             </div>
 
             <div class="modal-header" ng-hide="askForStudentVerification">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h3 class="modal-title" id="myModalLabel">Hello {{activeStudent.firstName}}.</h3>
-              <h4>Choose an event button below.</h4>
+              <h3 class="modal-title">Hello {{activeStudent.firstName}}!</h3>
+              <h4>Please select an event.</h4>
             </div>
 
             <!--student choosing event-->
             <div class="modal-body" ng-hide="askForStudentVerification">
               <div class="btn-group-vertical btn-block" role="group">
-                <button type="button" class="btn btn-danger btn-modal-large" ng-click="verifyStudentCheck('late')">
+                <button type="button" class="btn btn-danger btn-modal-large" ng-click="verifyStudent('late')">
                   <i class="fa fa-bell" aria-hidden="true" data-dismiss="modal"></i> Late
                 </button>
-                <button type="button" class="btn btn-warning btn-modal-large" ng-click="verifyStudentCheck('outOfUniform')">
+                <button type="button" class="btn btn-warning btn-modal-large" ng-click="verifyStudent('outOfUniform')">
                   <i class="fa fa-ban" aria-hidden="true" data-dismiss="modal"></i> Out of Uniform
                 </button>
-                <button type="button" class="btn btn-primary btn-modal-large" ng-click="verifyStudentCheck('bathroom')">
+                <button type="button" class="btn btn-primary btn-modal-large" ng-click="verifyStudent('bathroom')">
                   <i class="fa fa-shower" aria-hidden="true" data-dismiss="modal"></i> Bathroom
                 </button>
               </div> <!-- button group -->
@@ -105,7 +118,7 @@
                 <div class="input-group">
                   <input type="password" class="form-control" placeholder="Please enter the last 4 digits of your Student ID." ng-model="lastFourDigits">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">Sign In</button>
+                    <button class="btn btn-default" type="submit">Confirm</button>
                   </span>
                 </div><!-- /input-group -->
               </form>
@@ -120,23 +133,6 @@
           </div> <!--modal-content-->
         </div> <!--modal-dialog-->
       </div> <!--myModal-->
-
-      <!--<div id="idCheck" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-              <h3 id="myModalLabel">ID Check</h3>
-            </div>
-            <div class="modal-body">
-              <p>This modal should appear above the other modal.</p>
-            </div>
-            <div class="modal-footer">
-              <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>-->
 
     </div> <!-- container-->
   </body>

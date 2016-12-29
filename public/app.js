@@ -1,7 +1,9 @@
-var app = angular.module('cteaLogs', [])
+var app = angular.module('cteaLogs', ['angularMoment'])
 
 .controller('MainController', ['$scope', function($scope) {
   $scope.askForStudentVerification = false;
+  $scope.exampleDate = moment().format('ll LTS');
+  $scope.monthDayYear = moment().format('LL');   // December 28, 2016
 
   $scope.students = [
     {
@@ -18,11 +20,6 @@ var app = angular.module('cteaLogs', [])
     $scope.askForStudentVerification = false;
     $scope.activeStudent = student;
   };
-  
-  $scope.captureTime = function() {
-    $scope.timeInMs = Date.now();
-    console.log($scope.timeInMs);
-  };
 
   $scope.addStudent = function() {
     $scope.students.push({
@@ -38,7 +35,7 @@ var app = angular.module('cteaLogs', [])
     $scope.studentId = '';
   };
   
-  $scope.verifyStudentCheck = function(eventType) {
+  $scope.verifyStudent = function(eventType) {
     $scope.eventType = eventType;
     $scope.askForStudentVerification = true;
   };
@@ -49,19 +46,22 @@ var app = angular.module('cteaLogs', [])
       $scope.lastFourDigits = "";
       return;
     }
-    if ($scope.eventType == 'late') {
+    if ($scope.eventType === 'late') {
       $scope.addDateTime($scope.activeStudent.late);
-    } else if ($scope.eventType == 'outOfUniform') {
+    } else if ($scope.eventType === 'outOfUniform') {
       $scope.addDateTime($scope.activeStudent.outOfUniform);
-    } else if ($scope.eventType == 'bathroom') {
+    } else if ($scope.eventType === 'bathroom') {
       $scope.addDateTime($scope.activeStudent.bathroom);
     }
     $('#myModal').modal('hide');
     $scope.lastFourDigits = "";
+    setTimeout(function() {
+      $scope.askForStudentVerification = false;
+    }, 1000);
   };
 
   $scope.addDateTime = function(student) {
-    $scope.timeInMs = Date.now();
-    student.push({dateTime: $scope.timeInMs});
+    $scope.time = moment().format('ll LTS');
+    student.push({dateTime: $scope.time});
   };
 }]);
