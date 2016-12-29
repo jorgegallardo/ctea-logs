@@ -31,7 +31,6 @@ var app = angular.module('cteaLogs', ['angularMoment'])
       outOfUniform: [],
       bathroom: []
     }).then(function(response) {
-      alert('Successfully added student.');
       loadPage(); // reload students
     }, function(err) {
       alert('Unable to add student.');
@@ -53,18 +52,19 @@ var app = angular.module('cteaLogs', ['angularMoment'])
       $scope.lastFourDigits = "";
       return;
     }
-    if ($scope.eventType === 'late') {
-      $scope.addDateTime($scope.activeStudent.late);
-    } else if ($scope.eventType === 'outOfUniform') {
-      $scope.addDateTime($scope.activeStudent.outOfUniform);
-    } else if ($scope.eventType === 'bathroom') {
-      $scope.addDateTime($scope.activeStudent.bathroom);
-    }
+
     $('#myModal').modal('hide');
     $scope.lastFourDigits = "";
+
     setTimeout(function() {
       $scope.askForStudentVerification = false;
     }, 1000);
+    
+    $http.put('/api/students/' + $scope.activeStudent._id + '/addEvent/' + $scope.eventType).then(function() {
+      loadPage();
+    }, function(err) {
+      console.log(err);
+    });
   };
 
   $scope.addDateTime = function(student) {
