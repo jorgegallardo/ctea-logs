@@ -1,20 +1,17 @@
 var app = angular.module('cteaLogs', ['angularMoment'])
 
-.controller('MainController', ['$scope', function($scope) {
+.controller('MainController', ['$scope', '$http', function($scope, $http) {
   $scope.askForStudentVerification = false;
   $scope.exampleDate = moment().format('ll LTS');
-  $scope.monthDayYear = moment().format('LL');   // December 28, 2016
+  $scope.monthDayYear = moment().format('LL');
 
-  $scope.students = [
-    {
-      firstName: 'Bob',
-      lastName: 'George',
-      studentId: 1234,
-      late: [],
-      outOfUniform: [],
-      bathroom: []
-    }
-  ];
+  $scope.students = [];
+
+  $http.get('/api/students').then(function(response) {
+    $scope.students = response.data;
+  }, function(err) {
+    console.log(err);
+  });
 
   $scope.setStudent = function(student) {
     $scope.askForStudentVerification = false;
@@ -61,7 +58,7 @@ var app = angular.module('cteaLogs', ['angularMoment'])
   };
 
   $scope.addDateTime = function(student) {
-    $scope.time = moment().format('ll LTS');
-    student.push({dateTime: $scope.time});
+    $scope.dateTime = moment().format('ll LTS');
+    student.push({dateTime: $scope.dateTime});
   };
 }]);
