@@ -6,12 +6,16 @@ var app = angular.module('cteaLogs', ['angularMoment'])
   $scope.monthDayYear = moment().format('LL');
 
   $scope.students = [];
+  loadPage(); // initial load from server
 
-  $http.get('/api/students').then(function(response) {
-    $scope.students = response.data;
-  }, function(err) {
-    console.log(err);
-  });
+  function loadPage() {
+    //retrieve students from server
+    $http.get('/api/students').then(function(response) {
+      $scope.students = response.data;
+    }, function(err) {
+      console.log(err);
+    });
+  };
 
   $scope.setStudent = function(student) {
     $scope.askForStudentVerification = false;
@@ -19,14 +23,20 @@ var app = angular.module('cteaLogs', ['angularMoment'])
   };
 
   $scope.addStudent = function() {
-    $scope.students.push({
+    $http.post('/api/students', {
       firstName: $scope.firstName,
       lastName: $scope.lastName,
       studentId: $scope.studentId,
       late: [],
       outOfUniform: [],
       bathroom: []
+    }).then(function(response) {
+      alert('Successfully added student.');
+      loadPage(); // reload students
+    }, function(err) {
+      alert('Unable to add student.');
     });
+
     $scope.firstName = '';
     $scope.lastName = '';
     $scope.studentId = '';
