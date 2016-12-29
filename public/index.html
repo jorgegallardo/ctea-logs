@@ -42,7 +42,7 @@
             <li><a href="#per4">Period 4</a></li>
             <li><a href="#per6">Period 6</a></li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div><!--/.nav-collapse-->
       </div>
     </nav>
 
@@ -51,15 +51,15 @@
         <div class="col-md-12">
           <h1>Today is {{ monthDayYear }}.</h1>
           <br>
-          <!-- Standard button -->
-          <!--<button ng-repeat="student in students | orderBy:'firstName'" type="button" class="btn btn-lg btn-default" data-toggle="modal" data-target="#studentButton" ng-click="setStudent(student)">{{student.firstName}}</button>-->
-          <a href="#myModal" role="button" class="btn btn-default btn-lg" data-toggle="modal" ng-repeat="student in students | orderBy:'firstName'" ng-click="setStudent(student)">{{student.firstName}}</a>
-          <br>
-          <br>
-          {{ students }}
-        </div> <!-- col-md-12 -->
-      </div> <!-- row -->
-
+        </div> <!--col-md-12-->
+      </div> <!--row-->
+      <div class="row">
+        <div class="col-sm-3" ng-repeat="student in students | orderBy:'firstName'">
+          <a href="#myModal" role="button" class="btn btn-default btn-lg btn-block btn-huge" data-toggle="modal" ng-click="setStudent(student)">{{student.firstName}}</a><br>
+        </div> <!--col-sm-12-->
+      </div> <!--row-->
+      <br>
+      {{ students }}
       <div class="row">
         <div class="col-sm-12">
           <h1>Add Student</h1>
