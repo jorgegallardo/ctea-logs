@@ -1,6 +1,49 @@
-var app = angular.module('cteaLogs', ['angularMoment'])
+var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
+.config(['$routeProvider', function($routeProvider) {
+  $routeProvider
+  .when('/', {
+    templateUrl: 'pages/class.html',
+    controller: 'MainController'
+  });
+}])
+.controller('ModalController', ['$scope', '$http', 'StudentService', function($scope, $http, StudentService) {
+  $scope.activeStudent = StudentService.activeStudent;
+  
+  $scope.checkStudentId = function() {
+    if($scope.lastFourDigits !== $scope.activeStudent.studentId.toString()) {
+      alert("Incorrect Student ID entered.");
+      $scope.lastFourDigits = "";
+      return;
+    }
 
-.controller('MainController', ['$scope', '$http', function($scope, $http) {
+    $('#myModal').modal('hide');
+    $scope.lastFourDigits = "";
+
+    setTimeout(function() {
+      $scope.askForStudentVerification = false;
+    }, 1000);
+    
+    $http.put('/api/students/' + $scope.activeStudent._id + '/addEvent/' + $scope.eventType).then(function() {
+      loadPage();
+    }, function(err) {
+      console.log(err);
+    });
+  };
+  function loadPage() {
+    //retrieve students from server
+    $http.get('/api/students').then(function(response) {
+      $scope.students = response.data;
+    }, function(err) {
+      console.log(err);
+    });
+  }
+}])
+
+.service('StudentService', function() {
+  this.activeStudent = null;
+})
+
+.controller('MainController', ['$scope', '$http', 'StudentService', function($scope, $http, StudentService) {
   $scope.askForStudentVerification = false;
   $scope.exampleDate = moment().format('ll LTS');
   $scope.monthDayYear = moment().format('LL');
@@ -20,6 +63,7 @@ var app = angular.module('cteaLogs', ['angularMoment'])
   $scope.setStudent = function(student) {
     $scope.askForStudentVerification = false;
     $scope.activeStudent = student;
+    StudentService.activeStudent = student;
   };
 
   $scope.addStudent = function() {
@@ -46,6 +90,10 @@ var app = angular.module('cteaLogs', ['angularMoment'])
     $scope.eventType = eventType;
     $scope.askForStudentVerification = true;
   };
+
+  $('#myModal').on('hidden.bs.modal', function () {
+    loadPage();
+  });
 
   $scope.checkStudentId = function() {
     if($scope.lastFourDigits !== $scope.activeStudent.studentId.toString()) {
