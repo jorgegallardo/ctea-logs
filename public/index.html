@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="cteaLogs">
 <head>
+  <base href="/">
+  <meta name="fragment" content="!">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +27,7 @@
   </script>
 </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="NavController">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -38,10 +40,11 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Period 1</a></li>
-            <li><a href="#per3">Period 3</a></li>
-            <li><a href="#per4">Period 4</a></li>
-            <li><a href="#per6">Period 6</a></li>
+            <!-- <li class="active"><a href="/period/1">Period 1</a></li>
+            <li><a href="/period/3">Period 3</a></li>
+            <li><a href="/period/4">Period 4</a></li>
+            <li><a href="/period/6">Period 6</a></li> -->
+            <li ng-repeat="period in periods"><a href="/period/{{period._id}}">{{period.name}}</a></li>
           </ul>
         </div><!--/.nav-collapse-->
       </div>

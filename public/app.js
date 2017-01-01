@@ -1,10 +1,33 @@
 var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
-.config(['$routeProvider', function($routeProvider) {
+.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+
+  $locationProvider.html5Mode(true).hashPrefix('!');
+
   $routeProvider
   .when('/', {
     templateUrl: 'pages/class.html',
     controller: 'MainController'
+  })
+  .when('/period/:periodId', {
+    templateUrl: 'pages/class.html',
+    controller: 'MainController'
+  })
+  .otherwise({
+    redirectTo: '/'
   });
+}])
+.controller('NavController', ['$scope', '$http', function($scope, $http) {
+
+  function loadPeriods() {
+    //retrieve students from server
+    $http.get('/api/periods').then(function(response) {
+      $scope.periods = response.data;
+    }, function(err) {
+      console.log(err);
+    });
+  }
+
+  loadPeriods();
 }])
 .controller('ModalController', ['$scope', '$http', 'StudentService', function($scope, $http, StudentService) {
   $scope.activeStudent = StudentService.activeStudent;
@@ -43,17 +66,24 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
   this.activeStudent = null;
 })
 
-.controller('MainController', ['$scope', '$http', 'StudentService', function($scope, $http, StudentService) {
+.service('PeriodService', function() {
+  this.activePeriod = null;
+})
+
+.controller('MainController', ['$scope', '$http', '$routeParams', 'StudentService', function($scope, $http, $routeParams, StudentService) {
   $scope.askForStudentVerification = false;
   $scope.exampleDate = moment().format('ll LTS');
   $scope.monthDayYear = moment().format('LL');
+
+  var periodId = $routeParams.periodId;
 
   $scope.students = [];
   loadPage(); // initial load from server
 
   function loadPage() {
     //retrieve students from server
-    $http.get('/api/students').then(function(response) {
+    $http.get('/api/students' + (periodId ? ('/' + periodId) : '')).then(function(response) {
+      console.log(response.data);
       $scope.students = response.data;
     }, function(err) {
       console.log(err);
@@ -71,6 +101,7 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
       firstName: $scope.firstName,
       lastName: $scope.lastName,
       studentId: $scope.studentId,
+      periodId: $scope.periodId,
       late: [],
       outOfUniform: [],
       bathroom: []
@@ -83,6 +114,7 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
     $scope.firstName = '';
     $scope.lastName = '';
     $scope.studentId = '';
+    $scope.periodId = '';
   };
   
   $scope.verifyStudent = function(eventType) {
