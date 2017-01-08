@@ -47,12 +47,12 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
     }, 1000);
     
     $http.put('/api/students/' + $scope.activeStudent._id + '/addEvent/' + $scope.eventType).then(function() {
-      loadPage();
+      loadStudents();
     }, function(err) {
       console.log(err);
     });
   };
-  function loadPage() {
+  function loadStudents() {
     //retrieve students from server
     $http.get('/api/students').then(function(response) {
       $scope.students = response.data;
@@ -78,9 +78,19 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
   var periodId = $routeParams.periodId;
 
   $scope.students = [];
-  loadPage(); // initial load from server
+  loadStudents(); // initial load from server
+  loadPeriods();
 
-  function loadPage() {
+  function loadPeriods() {
+    //retrieve students from server
+    $http.get('/api/periods').then(function(response) {
+      $scope.periods = response.data;
+    }, function(err) {
+      console.log(err);
+    });
+  }
+
+  function loadStudents() {
     //retrieve students from server
     $http.get('/api/students' + (periodId ? ('/' + periodId) : '')).then(function(response) {
       console.log(response.data);
@@ -89,6 +99,18 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
       console.log(err);
     });
   };
+
+  function loadPeriods() {
+    //retrieve students from server
+    $http.get('/api/periods').then(function(response) {
+      $scope.periods = response.data;
+      if ($scope.periods.length > 0) $scope.selectedPeriod = $scope.periods[0];
+    }, function(err) {
+      console.log(err);
+    });
+  }
+
+  loadPeriods();
 
   $scope.setStudent = function(student) {
     $scope.askForStudentVerification = false;
@@ -101,12 +123,12 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
       firstName: $scope.firstName,
       lastName: $scope.lastName,
       studentId: $scope.studentId,
-      periodId: $scope.periodId,
+      periodId: $scope.selectedPeriod._id,
       late: [],
       outOfUniform: [],
       bathroom: []
     }).then(function(response) {
-      loadPage(); // reload students
+      loadStudents(); // reload students
     }, function(err) {
       alert('Unable to add student.');
     });
@@ -114,7 +136,6 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
     $scope.firstName = '';
     $scope.lastName = '';
     $scope.studentId = '';
-    $scope.periodId = '';
   };
   
   $scope.verifyStudent = function(eventType) {
@@ -124,7 +145,7 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
   };
 
   $('#myModal').on('hidden.bs.modal', function () {
-    loadPage();
+    loadStudents();
   });
 
   $scope.checkStudentId = function() {
@@ -142,7 +163,7 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
     }, 1000);
     
     $http.put('/api/students/' + $scope.activeStudent._id + '/addEvent/' + $scope.eventType).then(function() {
-      loadPage();
+      loadStudents();
     }, function(err) {
       console.log(err);
     });

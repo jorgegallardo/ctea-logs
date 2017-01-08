@@ -14,6 +14,7 @@
 <div class="row">
   <div class="col-sm-12">
     <h1>Add Student</h1>
+    {{periodId}}
     <form class="form-inline" ng-submit="addStudent()">
       <div class="form-group">
         <label class="sr-only">First Name</label>
@@ -28,8 +29,10 @@
         <input type="text" class="form-control" placeholder="Student ID" ng-model="studentId">
       </div>
       <div class="form-group">
-        <label class="sr-only">Period ID</label>
-        <input type="text" class="form-control" placeholder="Period ID" ng-model="periodId">
+       <!--  <input type="text" class="form-control" placeholder="Period ID" ng-model="periodId"> -->
+        <select ng-model="selectedPeriod" ng-options="period.name for period in periods">
+         <!--  <option ng-repeat="period in periods" value="{{period._id}}">{{period.name}}</option> -->
+        </select>
       </div>
       <button class="btn btn-default" type="submit">Add Student</button>
     </form>
