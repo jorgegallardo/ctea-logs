@@ -14,9 +14,16 @@ var Student = mongoose.model('Student', {
   firstName: String,
   lastName: String,
   studentId: Number,
-  late: [{}],
-  outOfUniform: [{}],
-  bathroom: [{}]
+  late: [{
+    dateTime: Date
+  }],
+  outOfUniform: [{
+    dateTime: Date
+  }],
+  bathroom: [{
+    begin: Date,
+    end: Date
+  }]
 });
 
 var Period = mongoose.model('Period', {
@@ -72,27 +79,36 @@ app.post('/api/students', function(req, res, next) {
   
 });
 
-app.put('/api/students/:objectId/addEvent/:eventType/', function(req, res) {
+app.put('/api/students/:objectId/addEvent/:eventType/:eventId', function(req, res) {
   var objectId = req.params.objectId;
   var eventType = req.params.eventType;
+  var eventId = req.params.eventId;
   var dateTime = moment().format('YYYY-MM-DD hh:mm:ss A');
 
   Student.findOne({_id: objectId}, function(err, student) {
     if(err) return next(err);
     if(!student) return res.end();
+
     if(eventType === 'late') {
       student.late.push({dateTime: dateTime});
-    }
-    else if(eventType === 'outOfUniform') {
+    } else if(eventType === 'outOfUniform') {
       student.outOfUniform.push({dateTime: dateTime});
+    } else if(eventType === 'bathroomBegin') {
+      student.bathroom.push({begin: dateTime});
+    } else if(eventType === 'bathroomEnd') {
+      for (var i = 0; i < student.bathroom.length; i++) {
+        if (student.bathroom[i]._id.equals(eventId)) {
+          student.bathroom[i].end = dateTime;
+          break;
+        }
+      }
     }
-    else if(eventType === 'bathroom') {
-      student.bathroom.push({dateTime: dateTime});
-    }
+
     student.save(function(err) {
       if(err) return next(err);
       return res.end();
     });
+    
   });
 });
 

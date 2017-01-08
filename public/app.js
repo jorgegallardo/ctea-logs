@@ -30,7 +30,6 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
   loadPeriods();
 }])
 .controller('ModalController', ['$scope', '$http', 'StudentService', function($scope, $http, StudentService) {
-  $scope.activeStudent = StudentService.activeStudent;
   
   $scope.checkStudentId = function() {
     if($scope.lastFourDigits !== $scope.activeStudent.studentId.toString()) {
@@ -46,20 +45,28 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
       $scope.askForStudentVerification = false;
     }, 1000);
     
-    $http.put('/api/students/' + $scope.activeStudent._id + '/addEvent/' + $scope.eventType).then(function() {
-      loadStudents();
+    $http.put('/api/students/' + $scope.activeStudent._id + '/addEvent/' + $scope.eventType + '/' + ($scope.activeStudent.activeBathroomEvent ? $scope.activeStudent.activeBathroomEvent._id : 0)).then(function() {
     }, function(err) {
       console.log(err);
     });
   };
-  function loadStudents() {
-    //retrieve students from server
-    $http.get('/api/students').then(function(response) {
-      $scope.students = response.data;
-    }, function(err) {
-      console.log(err);
+
+  $scope.verifyStudent = function(eventType) {
+    $scope.lastFourDigits = "";
+    $scope.eventType = eventType;
+    $scope.askForStudentVerification = true;
+  };
+
+  $scope.addDateTime = function(student) {
+    $scope.dateTime = moment().format('ll LTS');
+    student.push({dateTime: $scope.dateTime});
+  };
+
+  $('#myModal').on('shown.bs.modal', function () {
+    $scope.$apply(function() {
+      $scope.activeStudent = StudentService.activeStudent;
     });
-  }
+  });
 }])
 
 .service('StudentService', function() {
@@ -81,20 +88,21 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
   loadStudents(); // initial load from server
   loadPeriods();
 
-  function loadPeriods() {
-    //retrieve students from server
-    $http.get('/api/periods').then(function(response) {
-      $scope.periods = response.data;
-    }, function(err) {
-      console.log(err);
-    });
-  }
-
   function loadStudents() {
     //retrieve students from server
     $http.get('/api/students' + (periodId ? ('/' + periodId) : '')).then(function(response) {
-      console.log(response.data);
-      $scope.students = response.data;
+      var students = response.data;
+      for (var i = 0; i < students.length; i++) {
+        students[i].isBathroomActive = false;
+        for (var j = 0; j < students[i].bathroom.length; j++) {
+          if(students[i].bathroom[j].begin && !students[i].bathroom[j].end) {
+            students[i].isBathroomActive = true;
+            students[i].activeBathroomEvent = students[i].bathroom[j];
+            break;
+          }
+        }
+      }
+      $scope.students = students;
     }, function(err) {
       console.log(err);
     });
@@ -110,12 +118,11 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
     });
   }
 
-  loadPeriods();
-
   $scope.setStudent = function(student) {
     $scope.askForStudentVerification = false;
     $scope.activeStudent = student;
     StudentService.activeStudent = student;
+    //$('#myModal').modal('show');
   };
 
   $scope.addStudent = function() {
@@ -137,40 +144,9 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
     $scope.lastName = '';
     $scope.studentId = '';
   };
-  
-  $scope.verifyStudent = function(eventType) {
-    $scope.lastFourDigits = "";
-    $scope.eventType = eventType;
-    $scope.askForStudentVerification = true;
-  };
 
   $('#myModal').on('hidden.bs.modal', function () {
     loadStudents();
   });
 
-  $scope.checkStudentId = function() {
-    if($scope.lastFourDigits !== $scope.activeStudent.studentId.toString()) {
-      alert("Incorrect Student ID entered.");
-      $scope.lastFourDigits = "";
-      return;
-    }
-
-    $('#myModal').modal('hide');
-    $scope.lastFourDigits = "";
-
-    setTimeout(function() {
-      $scope.askForStudentVerification = false;
-    }, 1000);
-    
-    $http.put('/api/students/' + $scope.activeStudent._id + '/addEvent/' + $scope.eventType).then(function() {
-      loadStudents();
-    }, function(err) {
-      console.log(err);
-    });
-  };
-
-  $scope.addDateTime = function(student) {
-    $scope.dateTime = moment().format('ll LTS');
-    student.push({dateTime: $scope.dateTime});
-  };
 }]);

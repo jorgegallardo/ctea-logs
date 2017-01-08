@@ -62,8 +62,11 @@
           <button type="button" class="btn btn-warning btn-modal-large" ng-click="verifyStudent('outOfUniform')">
             Out of Uniform
           </button>
-          <button type="button" class="btn btn-primary btn-modal-large" ng-click="verifyStudent('bathroom')">
-            Bathroom
+          <button type="button" class="btn btn-primary btn-modal-large" ng-click="verifyStudent('bathroomBegin')" ng-hide="activeStudent.isBathroomActive">
+            Going to bathroom
+          </button>
+          <button type="button" class="btn btn-primary btn-modal-large" ng-click="verifyStudent('bathroomEnd')" ng-show="activeStudent.isBathroomActive">
+            Return from bathroom
           </button>
         </div> <!-- button group -->
       </div>
