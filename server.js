@@ -31,15 +31,6 @@ var Period = mongoose.model('Period', {
   students: [{type: ObjectId, ref: 'Student'}]
 });
 
-var p = new Period({name: 'Period 1'});
-p.save();
-p = new Period({name: 'Period 3'});
-p.save();
-p = new Period({name: 'Period 4'});
-p.save();
-p = new Period({name: 'Period 6'});
-p.save();
-
 app.use(express.static('./public'));
 
 app.get('/api/periods', function(req, res) {
