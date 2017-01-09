@@ -6,7 +6,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 var Mixed = mongoose.Schema.Types.Mixed;
 var moment = require('moment');
 
-mongoose.connect('mongodb://localhost/ctea-logs');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/ctea-logs');
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -125,7 +125,7 @@ app.use(function(err, req, res, next) {
   return res.setStatus(status).send(message);
 });
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log('Example app listening on port 3000!')
 });
 
