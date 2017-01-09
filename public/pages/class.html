@@ -54,10 +54,10 @@
       <!--student choosing event-->
       <div class="modal-body" ng-hide="askForStudentVerification">
         <div class="btn-group-vertical btn-block" role="group">
-          <button type="button" class="btn btn-danger btn-modal-large" ng-click="verifyStudent('late')">
+          <button type="button" class="btn btn-danger btn-modal-large" ng-click="verifyStudent('late')" ng-hide="activeStudent.isBathroomActive">
             Late
           </button>
-          <button type="button" class="btn btn-warning btn-modal-large" ng-click="verifyStudent('outOfUniform')">
+          <button type="button" class="btn btn-warning btn-modal-large" ng-click="verifyStudent('outOfUniform')" ng-hide="activeStudent.isBathroomActive">
             Out of Uniform
           </button>
           <button type="button" class="btn btn-primary btn-modal-large" ng-click="verifyStudent('bathroomBegin')" ng-hide="activeStudent.isBathroomActive">
