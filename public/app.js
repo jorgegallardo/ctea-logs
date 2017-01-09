@@ -52,7 +52,7 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
   };
 
   $scope.verifyStudent = function(eventType) {
-    $scope.lastFourDigits = "";
+    $scope.lastFourDigits = '';
     $scope.eventType = eventType;
     $scope.askForStudentVerification = true;
   };
@@ -65,6 +65,7 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
   $('#myModal').on('shown.bs.modal', function () {
     $scope.$apply(function() {
       $scope.activeStudent = StudentService.activeStudent;
+      $scope.askForStudentVerification = false;
     });
   });
 }])
@@ -119,8 +120,8 @@ var app = angular.module('cteaLogs', ['angularMoment', 'ngRoute'])
   }
 
   $scope.setStudent = function(student) {
-    $scope.askForStudentVerification = false;
-    $scope.activeStudent = student;
+    //$scope.askForStudentVerification = false;
+    //$scope.activeStudent = student;
     StudentService.activeStudent = student;
     //$('#myModal').modal('show');
   };
