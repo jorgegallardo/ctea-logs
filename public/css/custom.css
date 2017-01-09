@@ -17,3 +17,16 @@ body {
     padding-bottom:20px;
     font-size: 26px;
 }
+
+.btn-student{
+    padding-top:6px;
+    padding-bottom:8px;
+    padding-left:30px;
+    font-size: 24px;
+    text-align: left;
+    line-height: 1;
+}
+
+.student-lastName {
+	font-size: 18px;
+}

@@ -6,15 +6,13 @@
 </div> <!--row-->
 <div class="row">
   <div class="col-sm-3" ng-repeat="student in students | orderBy:'firstName'">
-    <a href="#myModal" role="button" class="btn btn-default btn-lg btn-block btn-huge" data-toggle="modal" ng-click="setStudent(student)">{{student.firstName}}</a><br>
+    <a href="#myModal" role="button" class="btn btn-default btn-lg btn-block btn-student" data-toggle="modal" ng-click="setStudent(student)">{{student.firstName}}<br><span class="student-lastName">{{student.lastName}}</span></a><br>
   </div> <!--col-sm-12-->
 </div> <!--row-->
 <br>
-{{ students }}
 <div class="row">
   <div class="col-sm-12">
     <h1>Add Student</h1>
-    {{periodId}}
     <form class="form-inline" ng-submit="addStudent()">
       <div class="form-group">
         <label class="sr-only">First Name</label>
